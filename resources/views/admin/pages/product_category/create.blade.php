@@ -10,24 +10,36 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
+        {{-- {{ dd($errors->all()) }} --}}
+
+
         <form role="form" action="{{ route('admin.product_category.store') }}" method="post">
             @csrf
           <div class="card-body">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
+              <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="{{ old('name') }}">
             </div>
+            @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
             <div class="form-group">
               <label for="slug">Slug</label>
-              <input type="text" class="form-control" id="slug" placeholder="slug" name="slug">
+              <input type="text" class="form-control" id="slug" placeholder="Enter Slug" name="slug" value="{{ old('slug') }}">
             </div>
+            @error('slug')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
             <div class="form-group">
             <label for="status">Status</label>
             <select id="status" name="status" class="form-control">
-                <option>---Please select---</option>
-                <option value="1">Show</option>
-                <option value="0">Hide</option>
+                <option value="">---Please select---</option>
+                <option {{ old('status') === '1' ? 'selected' : '' }} value="1">Show</option>
+                <option {{ old('status') === '0' ? 'selected' : '' }} value="0">Hide</option>
             </select>
+            @error('status')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
             </div>
           </div>
           <!-- /.card-body -->
@@ -40,4 +52,15 @@
       <!-- /.card -->
     </div>
   </div>
+@endsection
+
+@section('my-js')
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $('#name').on('keyup', function(){
+             var name = $(this).val();
+             $('#slug').val(name.replaceAll(' ', '-'));
+          });
+      });
+  </script>
 @endsection

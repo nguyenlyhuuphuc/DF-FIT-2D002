@@ -5,6 +5,13 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
+          @if(session('msg'))
+            @if (session('msg') === 'success')
+              <div class="alert alert-success">Success</div>  
+            @else
+              <div class="alert alert-danger">Failed</div>  
+            @endif
+         @endif  
           <h3 class="card-title">Product Category List</h3>
         </div>
         <!-- /.card-header -->
