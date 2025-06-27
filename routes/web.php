@@ -85,11 +85,11 @@ Route::get('admin/home', function (){
 
 
 
-Route::get('admin/product_category/list', function (){
-    return view('admin.pages.product_category.list');
-})->name('admin.product_category.index');
+Route::get('admin/product_category/list', [ProductCategoryController::class, 'index'])->name('admin.product_category.index');
 
 //use Illuminate\Http\Request;
 Route::post('admin/product_category/store', [ProductCategoryController::class, 'store'])->name('admin.product_category.store');
 
 Route::get('admin/product_category/create', [ProductCategoryController::class, 'create'])->name('admin.product_category.create');
+
+Route::get('admin/product_category/make_slug', [ProductCategoryController::class, 'makeSlug'])->name('admin.product_category.make_slug');

@@ -58,8 +58,16 @@
   <script type="text/javascript">
       $(document).ready(function(){
           $('#name').on('keyup', function(){
-             var name = $(this).val();
-             $('#slug').val(name.replaceAll(' ', '-'));
+            var slug = $(this).val();
+
+            $.ajax({
+                method: "GET", //method of form
+                url: "{{ route('admin.product_category.make_slug') }}", //action of form
+                data: {slug: slug}, //input name of form,
+                success: function(response) {
+                  $('#slug').val(response.slug);
+                }
+            });
           });
       });
   </script>

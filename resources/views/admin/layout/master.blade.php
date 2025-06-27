@@ -149,9 +149,6 @@
 <script src="{{ asset('admin_asset/plugins/chart.js/Chart.min.js') }}"></script>
 <!-- Sparkline -->
 <script src="{{ asset('admin_asset/plugins/sparklines/sparkline.js') }}"></script>
-<!-- JQVMap -->
-<script src="{{ asset('admin_asset/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-<script src="{{ asset('admin_asset/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
 <!-- jQuery Knob Chart -->
 <script src="{{ asset('admin_asset/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
 <!-- daterangepicker -->
