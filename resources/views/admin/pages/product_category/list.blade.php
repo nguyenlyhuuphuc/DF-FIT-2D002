@@ -37,7 +37,13 @@
                     <button class="btn {{ $data->status ? 'btn-success' : 'btn-danger' }}">{{ $data->status ? 'Show' : 'Hide' }}</button>
                   </td>
                   <td>{{ \Carbon\Carbon::parse($data->created_at)->format('m/d/Y H:i:s') }}</td>
-                  <td>Detail Delete</td>
+                  <td>
+                    <a href="{{ route('admin.product_category.detail', ['id' => $data->id]) }}" class="btn btn-primary">Detail</a> 
+                    <form action="{{ route('admin.product_category.destroy', ['id' => $data->id]) }}" method="post">
+                        @csrf
+                        <button class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                  </td>
                 </tr>
               @endforeach
             </tbody>
