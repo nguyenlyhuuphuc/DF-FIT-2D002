@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductCategoryStoreRequest;
 use App\Http\Requests\Admin\ProductCategoryUpdateRequest;
+use App\Models\ProductCategoryTest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -12,18 +13,26 @@ use Illuminate\Support\Str;
 class ProductCategoryController extends Controller
 {
     public function index(Request $request){
-        $result = DB::select('SELECT count(*) as count FROM product_category_test');
-        $totalItems = $result[0]->count;
-        $itemPerpage = 5;
-        $totalPages = (int)ceil($totalItems / $itemPerpage);
+        // $result = DB::select('SELECT count(*) as count FROM product_category_test');
+        // $totalItems = $result[0]->count;
+        // $itemPerpage = 5;
+        // $totalPages = (int)ceil($totalItems / $itemPerpage);
         
-        $page = $request->page ?? 1;
-        $offset = ($page - 1)* $itemPerpage;
+        // $page = $request->page ?? 1;
+        // $offset = ($page - 1)* $itemPerpage;
 
-        $datas = DB::select('SELECT * FROM product_category_test 
-        ORDER BY created_at DESC LIMIT ?,?', [$offset, $itemPerpage]);
+        // $datas = DB::select('SELECT * FROM product_category_test 
+        // ORDER BY created_at DESC LIMIT ?,?', [$offset, $itemPerpage]);
 
-        return view('admin.pages.product_category.list', ['datas' => $datas, 'totalPages' => $totalPages]);
+        //Eloquent
+        $itemPerpage = 7;
+        // $datas = ProductCategoryTest::orderBy('created_at', 'desc')->paginate($itemPerpage);        
+        // dd($datas);
+
+        //Query Builder
+        $datas = DB::table('product_category_test')->orderBy('created_at', 'desc')->paginate($itemPerpage);    
+
+        return view('admin.pages.product_category.list', ['datas' => $datas]);
     }
     
     public function create(){
@@ -32,8 +41,30 @@ class ProductCategoryController extends Controller
     
     public function store(ProductCategoryStoreRequest $request){     
         //Fresh data
-        $check = DB::insert("INSERT INTO product_category_test(id, name, slug, status, created_at) VALUES (?, ?, ?, ?, ?)",
-         [null, $request->name, $request->slug, $request->status, null]);
+        // $check = DB::insert("INSERT INTO product_category_test(id, name, slug, status, created_at) VALUES (?, ?, ?, ?, ?)",
+        //  [null, $request->name, $request->slug, $request->status, null]);
+
+        //Query Builder
+        // $check = DB::table('product_category_test')->insert([
+        //     'name' => $request->name,
+        //     'slug' => $request->slug,
+        //     'status' => $request->status,
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
+
+        //Eloquent
+        $productCategoryTest = new ProductCategoryTest();
+        $productCategoryTest->status = $request->status;
+        $productCategoryTest->name = $request->name;
+        $productCategoryTest->slug = $request->slug;
+        $check = $productCategoryTest->save(); //Insert record
+
+        // $data = ProductCategoryTest::create([
+        //         'name' => $request->name,
+        //         'slug' => $request->slug,
+        //         'status' => $request->status,
+        //     ]);
 
         return redirect()->route('admin.product_category.index')->with('msg', $check ? 'success' : 'fail');
     }
@@ -50,7 +81,14 @@ class ProductCategoryController extends Controller
     }
 
     public function destroy(string $id){
-        $result = DB::delete('DELETE FROM product_category_test where id = ?', [$id]);
+        // $result = DB::delete('DELETE FROM product_category_test where id = ?', [$id]);
+
+        //Query Builder
+        // $result = DB::table('product_category_test')->delete($id);
+
+        //Eloquent
+        // $result = ProductCategoryTest::where('id', $id)->delete();
+        $result = ProductCategoryTest::find($id)->delete();
 
         $msg = $result ? 'success' : 'fail';
         
@@ -59,13 +97,15 @@ class ProductCategoryController extends Controller
     }
 
     public function detail(string $id){
-        $data = DB::select('select * from product_category_test where id = ?', [$id]);
+        // $data = DB::select('select * from product_category_test where id = ?', [$id]);
 
-        if(!count($data)){
-            abort(404);
-        }
+        //Query Builder
+        // $data = DB::table('product_category_test')->find($id);
 
-        return view('admin.pages.product_category.detail')->with('data', $data[0]);
+        //Eloquent
+        $data = ProductCategoryTest::findOrFail($id);
+
+        return view('admin.pages.product_category.detail')->with('data', $data);
     }
 
     public function update(ProductCategoryUpdateRequest $request, string $id){
@@ -75,3 +115,5 @@ class ProductCategoryController extends Controller
        return redirect()->route('admin.product_category.index')->with('msg', $check ? 'success' : 'fail');
     }
 }
+
+;

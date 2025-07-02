@@ -36,7 +36,7 @@
                   <td>
                     <button class="btn {{ $data->status ? 'btn-success' : 'btn-danger' }}">{{ $data->status ? 'Show' : 'Hide' }}</button>
                   </td>
-                  <td>{{ \Carbon\Carbon::parse($data->created_at)->format('m/d/Y H:i:s') }}</td>
+                  <td>{{ $data->created_at ? \Carbon\Carbon::parse($data->created_at)->format('m/d/Y H:i:s') : '-' }}</td>
                   <td>
                     <a href="{{ route('admin.product_category.detail', ['id' => $data->id]) }}" class="btn btn-primary">Detail</a> 
                     <form action="{{ route('admin.product_category.destroy', ['id' => $data->id]) }}" method="post">
@@ -51,13 +51,7 @@
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-          <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-            @for($page = 1; $page <= $totalPages; $page++)
-              <li class="page-item"><a class="page-link" href="?page={{ $page }}">{{ $page }}</a></li>
-            @endfor
-            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-          </ul>
+          {{ $datas->links() }}
         </div>
       </div>
       <!-- /.card -->
