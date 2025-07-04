@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        ProductCategoryTest::factory(100)->create();
+        // ProductCategoryTest::factory(100)->create();
         // ProductCategoryTest::factory()->create([
         //     'status' => 1,
         //     'created_at' => now(),
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'ten' => 'Test Test'
         // ]);
 
-        // User::factory(100)->create();
+        User::factory(100)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',

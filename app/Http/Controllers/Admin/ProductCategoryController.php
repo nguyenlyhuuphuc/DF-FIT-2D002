@@ -25,12 +25,13 @@ class ProductCategoryController extends Controller
         // ORDER BY created_at DESC LIMIT ?,?', [$offset, $itemPerpage]);
 
         //Eloquent
-        $itemPerpage = 7;
-        // $datas = ProductCategoryTest::orderBy('created_at', 'desc')->paginate($itemPerpage);        
+        // $itemPerPage = env('ITEM_PER_PAGE', 5);
+        $itemPerPage = config('my-config.abc.xyz.a.b.c.item_per_page');
+        // $datas = ProductCategoryTest::orderBy('created_at', 'desc')->paginate($itemPerPage);        
         // dd($datas);
 
         //Query Builder
-        $datas = DB::table('product_category_test')->orderBy('created_at', 'desc')->paginate($itemPerpage);    
+        $datas = DB::table('product_category_test')->orderBy('created_at', 'desc')->paginate($itemPerPage);    
 
         return view('admin.pages.product_category.list', ['datas' => $datas]);
     }
@@ -109,8 +110,28 @@ class ProductCategoryController extends Controller
     }
 
     public function update(ProductCategoryUpdateRequest $request, string $id){
-        $check = DB::update("UPDATE product_category_test SET name = ?, slug = ?, status = ? WHERE id = ?",
-        [$request->name, $request->slug, $request->status, $id]);
+        // $check = DB::update("UPDATE product_category_test SET name = ?, slug = ?, status = ? WHERE id = ?",
+        // [$request->name, $request->slug, $request->status, $id]);
+        
+        //Query Builder 
+        // $check = DB::table('product_category_test')->where('id', $id)->update([
+        //     'name' => $request->name,
+        //     'slug' => $request->slug,
+        //     'status' => $request->status
+        // ]);
+
+        // //Eloquent
+        // $productCategoryTest = ProductCategoryTest::find($id);
+        // $productCategoryTest->name = $request->name;
+        // $productCategoryTest->slug = $request->slug;
+        // $productCategoryTest->status = $request->status;
+        // $check = $productCategoryTest->save(); //update record
+
+        $check = ProductCategoryTest::find($id)->update([
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'status' => $request->status
+        ]);
 
        return redirect()->route('admin.product_category.index')->with('msg', $check ? 'success' : 'fail');
     }
