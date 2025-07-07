@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Middleware\CheckIsAdmin;
 
 Route::get('admin/layout', function (){
     return view('admin.layout.master');
@@ -14,6 +15,7 @@ Route::get('admin/home', function (){
 Route::prefix('admin/product_category')
 ->controller(ProductCategoryController::class)
 ->name('admin.product_category.')
+->middleware(CheckIsAdmin::class)
 ->group(function(){
     Route::get('index', 'index')->name('index');
     Route::post('store', 'store')->name('store');
