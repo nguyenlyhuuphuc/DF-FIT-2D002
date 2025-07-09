@@ -32,7 +32,7 @@ class ProductCategoryController extends Controller
         // dd($datas);
 
         //Query Builder
-        $datas = DB::table('product_category_test')->orderBy('created_at', 'desc')->paginate($itemPerPage);    
+        $datas = DB::table('product_category_test')->orderBy('id', 'desc')->paginate($itemPerPage);    
 
         return view('admin.pages.product_category.list', ['datas' => $datas]);
     }
@@ -82,60 +82,23 @@ class ProductCategoryController extends Controller
         return response()->json(['slug' => $slug]);
     }
 
-    public function destroy(string $id){
-        // $result = DB::delete('DELETE FROM product_category_test where id = ?', [$id]);
-
-        //Query Builder
-        // $result = DB::table('product_category_test')->delete($id);
-
-        //Eloquent
-        // $result = ProductCategoryTest::where('id', $id)->delete();
-        $result = ProductCategoryTest::find($id)->delete();
-
-        $msg = $result ? 'success' : 'fail';
+    public function destroy(ProductCategoryTest $productCategory){
+        $msg = $productCategory->delete() ? 'success' : 'fail';
         
         //Flash message
         return redirect()->route('admin.product_category.index')->with('msg', $msg);
     }
 
-    public function detail(string $id){
-        // $data = DB::select('select * from product_category_test where id = ?', [$id]);
-
-        //Query Builder
-        // $data = DB::table('product_category_test')->find($id);
-
-        //Eloquent
-        $data = ProductCategoryTest::findOrFail($id);
-
-        return view('admin.pages.product_category.detail')->with('data', $data);
+    public function detail(ProductCategoryTest $productCategory){
+        return view('admin.pages.product_category.detail')->with('data', $productCategory);
     }
 
-    public function update(ProductCategoryUpdateRequest $request, string $id){
-        // $check = DB::update("UPDATE product_category_test SET name = ?, slug = ?, status = ? WHERE id = ?",
-        // [$request->name, $request->slug, $request->status, $id]);
-        
-        //Query Builder 
-        // $check = DB::table('product_category_test')->where('id', $id)->update([
-        //     'name' => $request->name,
-        //     'slug' => $request->slug,
-        //     'status' => $request->status
-        // ]);
-
-        // //Eloquent
-        // $productCategoryTest = ProductCategoryTest::find($id);
-        // $productCategoryTest->name = $request->name;
-        // $productCategoryTest->slug = $request->slug;
-        // $productCategoryTest->status = $request->status;
-        // $check = $productCategoryTest->save(); //update record
-
-        $check = ProductCategoryTest::find($id)->update([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'status' => $request->status
-        ]);
+    public function update(ProductCategoryUpdateRequest $request, ProductCategoryTest $productCategory){
+        $productCategory->name = $request->name;
+        $productCategory->slug = $request->slug;
+        $productCategory->status = $request->status;
+        $check = $productCategory->save();
 
        return redirect()->route('admin.product_category.index')->with('msg', $check ? 'success' : 'fail');
     }
 }
-
-;

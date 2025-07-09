@@ -16,4 +16,8 @@ class ProductCategoryTest extends Model
     // public $fillable = [];
 
     public $guarded = [];
+
+    // public function products(){
+    //     return $this->hasMany(Product::class, 'product_category_id');
+    // }
 }

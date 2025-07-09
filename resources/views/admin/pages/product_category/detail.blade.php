@@ -12,7 +12,7 @@
         <!-- form start -->
 
 
-        <form role="form" action="{{ route('admin.product_category.update', ['id' => $data->id]) }}" method="post">
+        <form role="form" action="{{ route('admin.product_category.update', ['productCategory' => $data->id]) }}" method="post">
             @csrf
           <div class="card-body">
             <div class="form-group">

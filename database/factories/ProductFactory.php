@@ -19,7 +19,11 @@ class ProductFactory extends Factory
     {
         $datas = ProductCategoryTest::all();
         $productCategoryIds = $datas->pluck('id')->toArray();
-        
+     
+        $imageUrl = "https://picsum.photos/640/480?random=".rand();
+        $imageName = "images_".uniqid();
+        file_put_contents(public_path('images/'.$imageName. '.jpg'), file_get_contents($imageUrl));
+
         return [
             'name' => fake()->name,
             'price' => fake()->randomFloat(2, 10, 99),
@@ -27,8 +31,10 @@ class ProductFactory extends Factory
             'weight' => fake()->randomFloat(2, 1, 10),
             'desptcriion' => fake()->randomHtml(2, 2),
             'status' => fake()->boolean(),
-            'main_image' => fake()->imageUrl(640, 480, 'animals', true),
+            'main_image' => $imageName. '.jpg',
             'product_category_id' => fake()->randomElement($productCategoryIds)
         ];
     }
 }
+
+

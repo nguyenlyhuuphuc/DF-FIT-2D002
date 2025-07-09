@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Middleware\CheckIsAdmin;
 
 Route::get('admin/layout', function (){
@@ -21,8 +22,10 @@ Route::prefix('admin/product_category')
     Route::post('store', 'store')->name('store');
     Route::get('create', 'create')->name('create');    
     Route::get('make_slug', 'makeSlug')->name('make_slug');
-    Route::post('destroy/{id}', 'destroy')->name('destroy');
-    Route::get('detail/{id}', 'detail')->name('detail');
-    Route::post('update/{id}', 'update')->name('update');
+    Route::post('destroy/{productCategory}', 'destroy')->name('destroy');
+    Route::get('detail/{productCategory}', 'detail')->name('detail');
+    Route::post('update/{productCategory}', 'update')->name('update');
 });
+
+Route::resource('admin/product', ProductController::class)->names('admin.product')->middleware(CheckIsAdmin::class);
 ?>
