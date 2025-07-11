@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductCategoryStoreRequest;
 use App\Http\Requests\Admin\ProductCategoryUpdateRequest;
+use App\Models\Product;
 use App\Models\ProductCategoryTest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,26 +14,27 @@ use Illuminate\Support\Str;
 
 class ProductCategoryController extends Controller
 {
-    public function index(Request $request){
-        // $result = DB::select('SELECT count(*) as count FROM product_category_test');
-        // $totalItems = $result[0]->count;
-        // $itemPerpage = 5;
-        // $totalPages = (int)ceil($totalItems / $itemPerpage);
-        
-        // $page = $request->page ?? 1;
-        // $offset = ($page - 1)* $itemPerpage;
+    public function index(Request $request){        
+        $keyword = $request->keyword ?? null;
+        $sort = $request->sort ?? 'latest';
 
-        // $datas = DB::select('SELECT * FROM product_category_test 
-        // ORDER BY created_at DESC LIMIT ?,?', [$offset, $itemPerpage]);
+        $array = ['id', 'desc'];
+        if($sort === 'oldest'){
+            $array = ['id', 'asc'];
+        }
+        [$column, $sort] = $array;
 
-        //Eloquent
-        // $itemPerPage = env('ITEM_PER_PAGE', 5);
         $itemPerPage = config('my-config.abc.xyz.a.b.c.item_per_page');
-        // $datas = ProductCategoryTest::orderBy('created_at', 'desc')->paginate($itemPerPage);        
-        // dd($datas);
+        $itemPerPage = 100;
 
         //Query Builder
-        $datas = DB::table('product_category_test')->orderBy('id', 'desc')->paginate($itemPerPage);    
+        if(!$keyword){
+            $datas = DB::table('product_category_test')->orderBy($column, $sort)->paginate($itemPerPage);    
+        }else{
+            $datas = DB::table('product_category_test')->where('name', 'LIKE', "%$keyword%")->orderBy($column, $sort)->paginate($itemPerPage);    
+        }
+
+        // $datas = ProductCategoryTest::withTrashed()->paginate(100);
 
         return view('admin.pages.product_category.list', ['datas' => $datas]);
     }
@@ -100,5 +102,13 @@ class ProductCategoryController extends Controller
         $check = $productCategory->save();
 
        return redirect()->route('admin.product_category.index')->with('msg', $check ? 'success' : 'fail');
+    }
+
+    public function restore(string $id){
+        $productCategory = ProductCategoryTest::withTrashed()->find($id);
+
+        $productCategory->restore();
+
+        return redirect()->route('admin.product_category.index')->with('msg', 'success');
     }
 }

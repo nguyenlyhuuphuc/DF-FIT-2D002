@@ -26,7 +26,7 @@ class ProductController extends Controller
         // ->paginate($itemPerPage);
 
         //Eloquent
-        $datas = Product::where('product.status', '=', 1)->orderBy('product.id', 'desc')->paginate($itemPerPage);
+        $datas = Product::with('productCategory')->where('product.status', '=', 1)->orderBy('product.id', 'desc')->paginate(100);
 
         return view('admin.pages.product.list', ['datas' => $datas]);
     }
@@ -74,8 +74,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $msg = $product->delete() ? 'success' : 'fail';
+        
+        return redirect()->route('admin.product.index')->with('msg', $msg);
     }
 }

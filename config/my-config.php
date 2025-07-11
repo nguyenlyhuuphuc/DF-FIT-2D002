@@ -5,7 +5,7 @@
                 'a' => [
                     'b' => [
                         'c' => [
-                            'item_per_page' => 10 + 1 + 2 + 3
+                            'item_per_page' => env('ITEM_PER_PAGE', 5)
                         ]
                     ]
                 ]

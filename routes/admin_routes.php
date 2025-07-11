@@ -25,7 +25,10 @@ Route::prefix('admin/product_category')
     Route::post('destroy/{productCategory}', 'destroy')->name('destroy');
     Route::get('detail/{productCategory}', 'detail')->name('detail');
     Route::post('update/{productCategory}', 'update')->name('update');
+    Route::post('restore/{productCategory}', 'restore')->name('restore');
 });
 
 Route::resource('admin/product', ProductController::class)->names('admin.product')->middleware(CheckIsAdmin::class);
+
+
 ?>
