@@ -10,7 +10,7 @@ class CartController extends Controller
 {
     public function index(){
         $cart = session()->get('cart');
-        dd($cart);
+        return view('client.pages.cart', ['cart' => $cart]);
     }
 
 

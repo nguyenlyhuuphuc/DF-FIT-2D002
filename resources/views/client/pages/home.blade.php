@@ -345,6 +345,11 @@
                             showConfirmButton: false,
                             timer: 1500
                         }); 
+                    },
+                    statusCode: {
+                        401: function() {
+                            window.location.href = "{{ route('login') }}";
+                        }
                     }
                 });
             });

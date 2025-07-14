@@ -13,6 +13,5 @@ Route::get('client/layout-master', function (){
 });
 
 Route::get('client/home',[HomeController::class, 'index'])->name('client.home.index');
-Route::get('cart/add-product-to-cart/{product}', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart');
-Route::get('cart', [CartController::class, 'index'])->name('cart.index');
-
+Route::get('cart/add-product-to-cart/{product}', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart')->middleware('auth');
+Route::get('cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
