@@ -13,6 +13,10 @@ class CartController extends Controller
         return view('client.pages.cart', ['cart' => $cart]);
     }
 
+    public function checkout(){
+        return view('client.pages.checkout');
+    }
+
 
     public function addProductToCart(Product $product){
         $cart = session()->get('cart', []);
