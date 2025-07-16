@@ -16,3 +16,4 @@ Route::get('client/home',[HomeController::class, 'index'])->name('client.home.in
 Route::get('cart/add-product-to-cart/{product}', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart')->middleware('auth');
 Route::get('cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
 Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout')->middleware('auth');
+Route::post('place-order', [CartController::class, 'placeOrder'])->name('client.cart.place-order')->middleware('auth');
