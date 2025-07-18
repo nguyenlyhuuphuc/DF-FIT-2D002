@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\GoogleController;
 use App\Http\Controllers\Client\HomeController;
 use App\Mail\TestEmailTemplate;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,8 @@ Route::post('place-order', [CartController::class, 'placeOrder'])->name('client.
 Route::get('test-mail', function(){
     $product = Product::find(1);
     Mail::to('nguyenlyhuuphucwork@gmail.com')->send(new TestEmailTemplate($product));
+});
+
+Route::get('vnpay_return', function (Request $request){
+    dd($request->all());
 });
