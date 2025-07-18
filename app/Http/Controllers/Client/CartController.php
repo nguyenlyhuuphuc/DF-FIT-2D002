@@ -111,6 +111,14 @@ class CartController extends Controller
                     $product->save();
                 }
             }else if($request->payment_method === 'vnpay'){
+
+                // VNPAY_TMNCODE=
+                // VNPAY_HASHSECRET=
+                // VNPAY_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+                // VNPAY_RETURNURL=http://localhost:8000/vnpay_return
+                // VNPAY_APIURL=http://sandbox.vnpayment.vn/merchant_webapi/merchant.html
+                // VNPAY_APIURL_APIURL=https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $startTime = date("YmdHis");
                 $expire = date('YmdHis',strtotime('+15 minutes',strtotime($startTime)));
